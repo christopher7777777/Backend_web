@@ -103,3 +103,4 @@ D:\Backend\Wandermate\obj\Debug\net8.0\refint\Wandermate.dll
 D:\Backend\Wandermate\obj\Debug\net8.0\Wandermate.pdb
 D:\Backend\Wandermate\obj\Debug\net8.0\Wandermate.genruntimeconfig.cache
 D:\Backend\Wandermate\obj\Debug\net8.0\ref\Wandermate.dll
+D:\Backend\Wandermate\obj\Debug\net8.0\Wandermate.sourcelink.json

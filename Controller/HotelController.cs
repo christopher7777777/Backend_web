@@ -36,11 +36,54 @@ namespace Wandermate.Controller
             return Ok(hotel);
         }
         [HttpPost ]
-        public IActionResult Create([FromBody] Hotel hotel){
+        public IActionResult Create([
+            FromBody] Hotel hotel){
+            if(hotel ==null){
+                return BadRequest();
+            }
+            
             _context.Hotel.Add(hotel);
             _context.SaveChanges();
             // return CreatedAtAction(nameof(GetById), new {id = hotel.Id}, hotel);
             return Ok (hotel);
         }
+        [HttpPut("{id}")]
+
+        public IActionResult Update([FromBody] Hotel hotel, int id)
+        {
+            var updateData = _context.Hotel.Find(id);
+            if (updateData == null)
+            {
+                return NoContent();
+            }
+            
+            updateData.Description = hotel.Description;
+            updateData.Name = hotel.Name;
+            updateData.Price = hotel.Price;
+            updateData.Image = hotel.Image;
+
+            _context.SaveChanges();
+            return Ok(updateData);
+            
+
+
+        }
+        [HttpDelete("{id}")]
+        public IActionResult Delete([FromBody] Hotel hotel, int id)
+        {
+            var content = _context.Hotel.Find(id);
+            if (content == null)
+            {
+                return NoContent();
+            }
+
+            _context.Hotel.Remove(content);
+            _context.SaveChanges();
+            return Ok();
+
+        }
+
+
     }
-}
+
+    }
