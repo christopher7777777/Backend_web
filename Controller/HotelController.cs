@@ -39,7 +39,8 @@ namespace Wandermate.Controller
         public IActionResult Create([FromBody] Hotel hotel){
             _context.Hotel.Add(hotel);
             _context.SaveChanges();
-            return CreatedAtAction(nameof(GetById), new {id = hotel.Id}, hotel);
+            // return CreatedAtAction(nameof(GetById), new {id = hotel.Id}, hotel);
+            return Ok (hotel);
         }
     }
 }

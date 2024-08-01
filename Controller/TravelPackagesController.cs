@@ -40,7 +40,8 @@ namespace Wandermate.Controller
         public IActionResult Create([FromBody] TravelPackages travelPackages){
             _context.TravelPackage.Add(travelPackages);
             _context.SaveChanges();
-            return CreatedAtAction(nameof(GetById), new {id = travelPackages.Id}, travelPackages);
+            // return CreatedAtAction(nameof(GetById), new {id = travelPackages.Id}, travelPackages);
+            return Ok(travelPackages);
         }
 
         
