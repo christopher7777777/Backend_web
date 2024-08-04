@@ -5,32 +5,28 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.SignalR;
+using Wandermate.Models;
 
 namespace wandermate.backened.Models
 {
-    [Table("Hotel")]
     public class Hotel
     {
+
         [Key]
+        public int Id { get; set; }
 
-        public int Id{ get;set;}
+        public string Name { get; set; } = string.Empty;
 
-        public string Name{get;set;} = String.Empty;
+        public string Description { get; set; }  = string.Empty;
 
-        public decimal Price{get;set;}
-        
-        public List<string> Image{get;set;}=new List<string>();
+        public string Address { get; set; } = string.Empty;
 
-         public string Description{get;set;} = String.Empty;
+        public string Price { get; set; } = string.Empty;   
 
-        public bool Rating{get;set;}
+        public string ImageUrl { get; set; } = string.Empty;
 
-        public bool FreeCancellation{get;set;}
+         public bool IsDeleted { get; set; } = false; // Soft delete flag
 
-         public bool ReserveNow{get;set;}
-
-
-
-        
+        public ICollection<Review> Review {get; set; } = new List<Review>();
     }
 }
