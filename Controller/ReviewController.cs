@@ -22,31 +22,34 @@ namespace Wandermate.Controller
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<ActionResult<IEnumerable<Review>>> GetReviews()
         {
-            return Ok(_context.Review.ToList());
+            return await _context.Review
+                                .Include(r => r.Hotel)
+                                .Include(r => r.User)
+                                .ToListAsync();
         }
 
         [HttpPost]
 
         public async Task<ActionResult<IEnumerable<Review>>> Create([FromBody] ReviewDto reviewDto)
         {
-            try{
-            var review = new Review
+            try
             {
-                Rating = reviewDto.Rating,
-                ReviewText = reviewDto.ReviewText,
-                HotelId = reviewDto.HotelId
+                var review = new Review
+                {
+                    Rating = reviewDto.Rating,
+                    ReviewText = reviewDto.ReviewText,
+                    HotelId = reviewDto.HotelId
 
+                };
 
-            };
+                await _context.Review.AddAsync(review);
+                await _context.SaveChangesAsync();
 
-            await _context.Review.AddAsync(review);
-            await _context.SaveChangesAsync();
-
-            return Ok(review);
+                return Ok(review);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }

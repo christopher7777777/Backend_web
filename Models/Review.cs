@@ -20,6 +20,10 @@ namespace Wandermate.Models
         public int? HotelId{get; set; }
 
         public Hotel? Hotel {get; set; }
+
+        public int? UserId{get; set; }
+
+        public User? User { get; set; }
         public string ReviewText { get; internal set; }
     }
 }

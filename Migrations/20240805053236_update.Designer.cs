@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Wandermate.Data;
@@ -12,9 +13,11 @@ using Wandermate.Data;
 namespace Wandermate.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240805053236_update")]
+    partial class update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,32 +25,6 @@ namespace Wandermate.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("Wandermate.Models.Booking", b =>
-                {
-                    b.Property<int?>("BookingId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int?>("BookingId"));
-
-                    b.Property<DateTime?>("BookingDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int?>("HotelId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("BookingId");
-
-                    b.HasIndex("HotelId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Booking");
-                });
 
             modelBuilder.Entity("Wandermate.Models.Review", b =>
                 {
@@ -176,21 +153,6 @@ namespace Wandermate.Migrations
                     b.ToTable("TravelPackage");
                 });
 
-            modelBuilder.Entity("Wandermate.Models.Booking", b =>
-                {
-                    b.HasOne("wandermate.backened.Models.Hotel", "Hotel")
-                        .WithMany()
-                        .HasForeignKey("HotelId");
-
-                    b.HasOne("Wandermate.Models.User", "User")
-                        .WithMany("Bookings")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Hotel");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Wandermate.Models.Review", b =>
                 {
                     b.HasOne("wandermate.backened.Models.Hotel", "Hotel")
@@ -208,8 +170,6 @@ namespace Wandermate.Migrations
 
             modelBuilder.Entity("Wandermate.Models.User", b =>
                 {
-                    b.Navigation("Bookings");
-
                     b.Navigation("Reviews");
                 });
 

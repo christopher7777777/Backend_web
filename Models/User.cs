@@ -10,12 +10,18 @@ namespace Wandermate.Models
     public class User
     {
         [Key]
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         public string UserName { get; set; } = string.Empty;
 
-        public string Email { get; set; } = string.Empty;
+        public string Role { get; set; } = string.Empty;
+
+        public string Name { get; set; } = string.Empty;
 
         public string Password { get; set; } = string.Empty;
+
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
+        public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+
     }
 }

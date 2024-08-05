@@ -25,8 +25,14 @@ namespace Wandermate.Controller
         [HttpGet]
         public async Task<ActionResult> Get()
         {
+            try{
             var hotels = await _context.Hotel.ToListAsync();
             return Ok(hotels);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
 
