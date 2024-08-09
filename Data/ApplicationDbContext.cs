@@ -26,22 +26,27 @@ namespace Wandermate.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Review>()
-                        .HasOne(r => r.User)
-                        .WithMany(u => u.Reviews)
-                        .HasForeignKey(r => r.UserId);
+            // modelBuilder.Entity<Review>()
+            //             .HasOne(r => r.User)
+            //             .WithMany(u => u.Reviews)
+            //             .HasForeignKey(r => r.UserId);
 
 
-            modelBuilder.Entity<Review>()
-            .HasOne(r => r.Hotel)
-            .WithMany(h => h.Review)
-            .HasForeignKey(r => r.HotelId);
+            // modelBuilder.Entity<Review>()
+            // .HasOne(r => r.Hotel)
+            // .WithMany(h => h.Review)
+            // .HasForeignKey(r => r.HotelId);
 
             // modelBuilder.Entity<Hotel>()
             //     .HasMany(h => h.Review)
             //     .WithOne(i => i.Hotel)
             //     .HasForeignKey(i => i.HotelId)
             //     .OnDelete(DeleteBehavior.Cascade);
+        }
+
+        internal async Task SaveChangesAddAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

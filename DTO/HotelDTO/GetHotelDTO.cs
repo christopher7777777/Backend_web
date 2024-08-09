@@ -2,17 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.SignalR;
-using Wandermate.Models;
 
-namespace wandermate.backened.Models
+namespace Wandermate.DTO.HotelDTO
 {
-    public class Hotel
+    public class GetHotelDTO
     {
-
-        [Key]
         public int Id { get; set; }
 
         public string Name { get; set; } = string.Empty;
@@ -25,8 +19,5 @@ namespace wandermate.backened.Models
 
         public List<string> ImageUrl { get; set; } = new List<string>();
 
-        public bool IsDeleted { get; set; } = false;
-
-        public ICollection<Review> Review { get; set; } = new List<Review>();
     }
 }

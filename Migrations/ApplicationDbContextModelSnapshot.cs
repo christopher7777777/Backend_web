@@ -34,15 +34,10 @@ namespace Wandermate.Migrations
                     b.Property<DateTime?>("BookingDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("HotelId")
-                        .HasColumnType("integer");
-
                     b.Property<int?>("UserId")
                         .HasColumnType("integer");
 
                     b.HasKey("BookingId");
-
-                    b.HasIndex("HotelId");
 
                     b.HasIndex("UserId");
 
@@ -128,9 +123,9 @@ namespace Wandermate.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("ImageUrl")
+                    b.Property<List<string>>("ImageUrl")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text[]");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -160,7 +155,7 @@ namespace Wandermate.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<List<string>>("Image")
+                    b.Property<List<string>>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("text[]");
 
@@ -168,8 +163,9 @@ namespace Wandermate.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric");
+                    b.Property<string>("Price")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -178,15 +174,9 @@ namespace Wandermate.Migrations
 
             modelBuilder.Entity("Wandermate.Models.Booking", b =>
                 {
-                    b.HasOne("wandermate.backened.Models.Hotel", "Hotel")
-                        .WithMany()
-                        .HasForeignKey("HotelId");
-
                     b.HasOne("Wandermate.Models.User", "User")
                         .WithMany("Bookings")
                         .HasForeignKey("UserId");
-
-                    b.Navigation("Hotel");
 
                     b.Navigation("User");
                 });

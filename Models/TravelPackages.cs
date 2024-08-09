@@ -15,8 +15,9 @@ namespace wandermate.backened.Models
 
         public int Id { get; set; }
         public string Name { get; set; } = String.Empty;
-        public decimal Price { get; set; }
-        public List<string> Image { get; set; } = new List<string>();
+
+        public string Price { get; set; } = string.Empty;
+        public List<string> ImageUrl { get; set; } = new List<string>();
 
         public string Description { get; set; } = String.Empty;
     }

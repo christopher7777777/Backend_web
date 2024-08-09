@@ -26,7 +26,7 @@ namespace Wandermate.Controller
         {
             return await _context.Review
                                 .Include(r => r.Hotel)
-                                .Include(r => r.User)
+                                // .Include(r => r.User)
                                 .ToListAsync();
         }
 

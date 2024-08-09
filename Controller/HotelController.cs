@@ -6,13 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using wandermate.backened.Models;
 using Wandermate.Data;
-using Wandermate.DTO;
+using Wandermate.DTO.HotelDTO;
 
 namespace Wandermate.Controller
 {
     [Route("Wandermate/hotel")]
     [ApiController]
-
     public class HotelController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -21,13 +20,24 @@ namespace Wandermate.Controller
         {
             _context = context;
         }
-        // GET api/hotel
+
+        // GET Wandermate/hotel
         [HttpGet]
-        public async Task<ActionResult> Get()
+        public async Task<ActionResult<IEnumerable<GetHotelDTO>>> Get()
         {
-            try{
-            var hotels = await _context.Hotel.ToListAsync();
-            return Ok(hotels);
+            try
+            {
+                var hotels = await _context.Hotel
+                    .Select(hotel => new GetHotelDTO
+                    {
+                        Id = hotel.Id,
+                        Name = hotel.Name,
+                        Description = hotel.Description,
+                        Price = hotel.Price,
+                        ImageUrl = hotel.ImageUrl,
+                    }).ToListAsync();
+
+                return Ok(hotels);
             }
             catch (Exception ex)
             {
@@ -35,84 +45,108 @@ namespace Wandermate.Controller
             }
         }
 
-
-        // GET api/hotel/id
+        // GET Wandermate/hotel/{id}
         [HttpGet("{id}")]
-        public IActionResult GetById([FromRoute] int id)
+        public async Task<ActionResult<GetHotelDTO>> GetById(int id)
         {
-            var hotel = _context.Hotel.Find(id);
-            if (hotel == null)
+            try
             {
-                return NotFound();
-            }
-            return Ok(hotel);
-        }
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] HotelDto hotelDto)
-        { 
-            try{
-            var hotel = new Hotel
-            {
-                Name = hotelDto.Name,
-                Description = hotelDto.Description,
-                Price = hotelDto.Price,
-                ImageUrl = hotelDto.ImageUrl
-            };
+                var hotel = await _context.Hotel
+                    .Select(h => new GetHotelDTO
+                    {
+                        Name = h.Name,
+                        Description = h.Description,
+                        Price = h.Price,
+                        ImageUrl = h.ImageUrl,
+                    }).FirstOrDefaultAsync();
 
-            if (hotel == null)
-            {
-                return BadRequest();
-            }
+                if (hotel == null)
+                {
+                    return NotFound();
+                }
 
-            await _context.Hotel.AddAsync(hotel);
-            await _context.SaveChangesAsync();
-
-            // return CreatedAtAction(nameof(GetById), new { id = hotel.Id }, hotel);
-            return Ok(hotel);
+                return Ok(hotel);
             }
             catch (Exception ex)
             {
-            return StatusCode(500, $"Internal server error: {ex.Message}");
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
 
+        // POST Wandermate/hotel
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] HotelDTO hotelDTO)
+        {
+            try
+            {
+                var hotel = new Hotel
+                {
+                    Name = hotelDTO.Name,
+                    Description = hotelDTO.Description,
+                    Price = hotelDTO.Price,
+                    ImageUrl = hotelDTO.ImageUrl
+                };
+
+                await _context.Hotel.AddAsync(hotel);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction(nameof(GetById), new { id = hotel.Id }, hotel);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        // PUT Wandermate/hotel/{id}
         [HttpPut("{id}")]
-
-        public IActionResult Update([FromBody] Hotel hotel, int id)
+        public async Task<IActionResult> Update(int id, [FromBody] HotelDTO hotelDTO)
         {
-            var updateData = _context.Hotel.Find(id);
-            if (updateData == null)
+            try
             {
-                return NoContent();
+                var updateData = await _context.Hotel.FindAsync(id);
+                if (updateData == null)
+                {
+                    return NotFound();
+                }
+
+                updateData.Name = hotelDTO.Name;
+                updateData.Description = hotelDTO.Description;
+                updateData.Price = hotelDTO.Price;
+                updateData.ImageUrl = hotelDTO.ImageUrl;
+
+                _context.Hotel.Update(updateData);
+                await _context.SaveChangesAsync();
+
+                return Ok(updateData);
             }
-
-            updateData.Description = hotel.Description;
-            updateData.Name = hotel.Name;
-            updateData.Price = hotel.Price;
-            updateData.ImageUrl = hotel.ImageUrl;
-
-            _context.SaveChanges();
-            return Ok(updateData);
-
-
-
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
+
+        // DELETE Wandermate/hotel/{id}
         [HttpDelete("{id}")]
-        public IActionResult Delete([FromBody] Hotel hotel, int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var content = _context.Hotel.Find(id);
-            if (content == null)
+            try
             {
-                return NoContent();
+                var content = await _context.Hotel.FindAsync(id);
+                if (content == null)
+                {
+                    return NotFound();
+                }
+
+                _context.Hotel.Remove(content);
+                await _context.SaveChangesAsync();
+
+                return Ok();
             }
-
-            _context.Hotel.Remove(content);
-            _context.SaveChanges();
-            return Ok();
-
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
-
-
     }
-
 }

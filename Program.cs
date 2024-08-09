@@ -10,6 +10,8 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
     });
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -23,8 +25,9 @@ options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")
 builder.Services.AddCors(
     options =>
     {
-        options.AddPolicy("AllowAll", builder =>
+        options.AddPolicy("AllowAllOrigin", builder =>
         {
+            
             builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
         });
     });
@@ -37,7 +40,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseCors("AllowAll");
+app.UseCors("AllowAllOrigin");
 app.UseHttpsRedirection();
 app.MapControllers();
 

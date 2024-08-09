@@ -65,7 +65,7 @@ namespace Wandermate.Controller
             data.Description = travelpackages.Description;
             data.Name = travelpackages.Name;
             data.Price = travelpackages.Price;
-            data.Image = travelpackages.Image;
+            data.ImageUrl = travelpackages.ImageUrl;
             _context.SaveChanges();
             return Ok(data);
 

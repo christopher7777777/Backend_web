@@ -5,7 +5,7 @@
 namespace Wandermate.Migrations
 {
     /// <inheritdoc />
-    public partial class updatessssss : Migration
+    public partial class control : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
